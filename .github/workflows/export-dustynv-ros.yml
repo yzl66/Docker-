@@ -1,0 +1,27 @@
+name: Export dustynv ROS Noetic L4T Image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Pull Docker image
+        run: |
+          docker pull dustynv/ros:noetic-ros-base-l4t-r35.3.1
+
+      - name: Save image to tar
+        run: |
+          docker save dustynv/ros:noetic-ros-base-l4t-r35.3.1 \
+            -o ros_noetic_l4t_r35.3.1.tar
+
+      - name: Upload image tar as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ros_noetic_l4t_r35.3.1
+          path: ros_noetic_l4t_r35.3.1.tar
